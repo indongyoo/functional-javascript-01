@@ -1,0 +1,11 @@
+<script src="../lib/fx.js"></script>
+
+## promise.then의 중요한 규칙
+
+<script>
+  Promise.resolve(Promise.resolve(1)).then(function(a) {
+    log(a);
+  });
+
+  new Promise(resolve => resolve(new Promise(resolve => resolve(1)))).then(log);
+</script>

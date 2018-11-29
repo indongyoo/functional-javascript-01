@@ -1,0 +1,86 @@
+<script src="../lib/fx.js"></script>
+
+## 지연 평가 + Promise - L.map, map, take
+
+<script>
+/*  go(
+    [1, 2, 3],
+    L.map(a => Promise.resolve(a + 10)),
+    take(2),
+    log);
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    L.map(a => a + 10),
+    take(2),
+    log);
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    L.map(a => Promise.resolve(a + 10)),
+    take(2),
+    log);
+
+  go(
+    [1, 2, 3],
+    map(a => Promise.resolve(a + 10)),
+    log);
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    map(a => a + 10),
+    log);
+
+  go(
+    [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)],
+    map(a => Promise.resolve(a + 10)),
+    log);*/
+</script>
+
+## Kleisli Composition - L.filter, filter, nop, take
+
+<script>
+  go([1, 2, 3, 4, 5, 6],
+    L.map(a => Promise.resolve(a * a)),
+    // L.map(a => a * a),
+    filter(a => Promise.resolve(a % 2)),
+    // L.map(a => a * a),
+    /*L.map(a => {
+      log(a);
+      return a * a;
+    }),
+    L.map(a => {
+      log(a);
+      return a * a;
+    }),*/
+    // take(4),
+    /*log*/);
+</script>
+
+## reduce에서 nop 지원
+
+<script>
+  go([1, 2, 3, 4, 5],
+    L.map(a => Promise.resolve(a * a)),
+    L.filter(a => Promise.resolve(a % 2)),
+    reduce(add)/*,
+    log*/);
+</script>
+
+<script>
+  go([1, 2, 3, 4, 5, 6, 7, 8],
+    L.map(a => {
+      log(a);
+      return new Promise(resolve => setTimeout(() => resolve(a * a), 1000))
+    }),
+    L.filter(a => {
+      log(a);
+      return new Promise(resolve => setTimeout(() => resolve(a % 2), 1000))
+    }),
+    take(2),
+    reduce(add),
+    log);
+</script>
+
+
+

@@ -1,0 +1,56 @@
+<script>const log = console.log;</script>
+
+# 제너레이터/이터레이터
+- 제너레이터: 이터레이터이자 이터러블을 생성하는 함수
+
+<script>
+  function *gen1() {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+  const iter1 = gen1();
+  log(iter1.next());
+  log(iter1.next());
+  log(iter1.next());
+  log(iter1.next());
+
+  for (const a of gen1()) {
+    log(a);
+  }
+</script>
+
+# odds
+
+<script>
+  function *odds(limit) {
+    for (var i = 1; i <= limit; i++) {
+      if (i % 2) yield i;
+    }
+  }
+  const iter2 = odds(9);
+  /*log( iter2.next() );
+  log( iter2.next() );
+  log( iter2.next() );
+  log( iter2.next() );
+  log( iter2.next() );
+  log( iter2.next() );*/
+
+  for (const a of odds(11)) log(a);
+  console.clear();
+</script>
+
+# for of, 전개 연산자, 구조 분해, 나머지 연산자
+
+<script>
+  log( [...odds(7), ...odds(5)] );
+
+  const [head, ...tail] = odds(7);
+  log(head, tail);
+
+  const iter3 = odds(9);
+  iter3.next();
+  iter3.next();
+  const [head1, ...tail2] = iter3;
+  log(head1, tail2);
+</script>

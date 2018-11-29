@@ -1,0 +1,29 @@
+<script>const log = console.log;</script>
+
+# 평가
+ - 코드가 계산(Evaluation) 되어 값을 만드는 것
+
+# 일급
+ - 값으로 다룰 수 있다.
+ - 변수에 담을 수 있다.
+ - 함수의 인자로 사용될 수 있다.
+ - 함수의 결과로 사용될 수 있다.
+
+<script>
+  const a = 20;
+  const add1 = a => a + 1;
+  log( add1(a) );
+</script>
+
+# 일급 함수
+ - 함수를 값으로 다룰 수 있다.
+ - 조합성과 추상화의 도구
+
+<script>
+  const add2 = a => a + 2;
+  log(add2);
+  const f = () => () => 1;
+  log(f());
+  const f2 = f();
+  log(f2());
+</script>
