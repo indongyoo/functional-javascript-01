@@ -87,7 +87,7 @@ L.flatten = function *(iter) {
   }
 };
 
-L.deepFlatten = function *f(iter) {
+L.deepFlat = function *f(iter) {
   for (const a of iter) {
     if (isIterable(a)) yield *f(a);
     else yield a;
