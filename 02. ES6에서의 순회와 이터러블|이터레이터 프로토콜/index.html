@@ -1,97 +1,52 @@
+<script>const log = console.log;</script>
+
 ## 기존과 달라진 ES6에서의 리스트 순회
  - for i++
  - for of
 
 <script>
-  const log = console.log;
-
-  /*var list = [1, 2, 3];
+  const list = [1, 2, 3];
   for (var i = 0; i < list.length; i++) {
-    log(list[i]);
-  }*/
+    // log(list[i]);
+  }
+  const str = 'abc';
+  for (var i = 0; i < str.length; i++) {
+    // log(str[i]);
+  }
+  for (const a of list) {
+    // log(a);
+  }
+  for (const a of str) {
+    // log(a);
+  }
 </script>
 
 ### Array를 통해 알아보기
 
 <script>
-  log('Array ----');
-  const arr = [1, 2, 3];
-  const iter1 = arr[Symbol.iterator]();
-  log(iter1.next());
-  log(iter1.next());
-  log(iter1.next());
-  log(iter1.next());
-  for (const a of arr) {
-    log(a);
-  }
-  log('Array ----');
+log('Arr -----------');
+const arr = [1, 2, 3];
+let iter1 = arr[Symbol.iterator]();
+for (const a of iter1) log(a);
 </script>
 
 ### Set을 통해 알아보기
 
 <script>
-  log('Set ----');
-  const set = new Set([1, 2, 3]);
-  const iter2 = set[Symbol.iterator]();
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  for (const a of set) {
-    log(a);
-  }
-  log('Set ----');
+log('Set -----------');
+const set = new Set([1, 2, 3]);
+for (const a of set) log(a);
 </script>
 
 ### Map을 통해 알아보기
 
 <script>
-  log('Map ----');
-  const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
-  const iter3 = map.values();
-  log( iter3.next() );
-  log( iter3.next() );
-  log( iter3.next() );
-  log( iter3.next() );
-  for (const a of map.values()) {
-    log(a);
-  }
-  log('Map ----');
-</script>
-
-### 사용자 정의 이터러블을 통해 알아보기
-
-<script>
-  console.clear();
-  const iterable = {
-    [Symbol.iterator]: function() {
-      var limit = 3;
-      return {
-        next() {
-          return limit < 1 ? { done: true } : { value: limit--, done: false }
-        },
-        [Symbol.iterator]: function() { return this; }
-      }
-    }
-  };
-  const iter4 = iterable[Symbol.iterator]();
-  log( iter4.next() );
-  log( iter4.next() );
-  // log( iter4 == iter4[Symbol.iterator]() );
-  for (const a of iter4) {
-    log(a);
-  }
-
-  // const arr2 = [1, 2, 3];
-  // const iter5 = arr2[Symbol.iterator]();
-  // log( iter5.next() );
-  // for (const a of iter5) {
-  //   log(a);
-  // }
-
-  for (const a of document.querySelectorAll('*')) {
-    log(a);
-  }
+log('Map -----------');
+const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
+for (const a of map.keys()) log(a);
+for (const a of map.values()) log(a);
+for (const a of map.entries()) log(a);
+console.clear();
 </script>
 
 ## 이터러블/이터레이터 프로토콜
@@ -99,12 +54,47 @@
  - 이터레이터: { value, done } 객체를 리턴하는 next() 를 가진 값
  - 이터러블/이터레이터 프로토콜: 이터러블을 for...of, 전개 연산자 등과 함께 동작하도록한 규약
 
+### 사용자 정의 이터러블을 통해 알아보기
+
+<script>
+  const iterable = {
+    [Symbol.iterator]() {
+      let i = 3;
+      return {
+        next() {
+          return i == 0 ? { done: true } : { value: i--, done: false };
+        },
+        [Symbol.iterator]() { return this; }
+      }
+    }
+  };
+  let iterator = iterable[Symbol.iterator]();
+  iterator.next();
+  iterator.next();
+  // log(iterator.next());
+  // log(iterator.next());
+  // log(iterator.next());
+  for (const a of iterator) log(a);
+
+  // const arr2 = [1, 2, 3];
+  // let iter2 = arr2[Symbol.iterator]();
+  // iter2.next();
+  // log(iter2[Symbol.iterator]() == iter2);
+  // for (const a of iter2) log(a);
+
+  for (const a of document.querySelectorAll('*')) log(a);
+  const all = document.querySelectorAll('*');
+  let iter3 = all[Symbol.iterator]();
+  log(iter3.next());
+  log(iter3.next());
+  log(iter3.next());
+</script>
+
 ## 전개 연산자
 
 <script>
-  console.clear();
-
-  const list3 = [1, 2];
-
-  log( [...map.keys(), ...iterable, ...list3] );
+console.clear();
+const a = [1, 2];
+// a[Symbol.iterator] = null;
+log([...a, ...arr, ...set, ...map.keys()]);
 </script>
