@@ -82,14 +82,14 @@ L.entries = function *(obj) {
 
 L.flatten = function *(iter) {
   for (const a of iter) {
-    if (isIterable(a)) yield *a;
+    if (isIterable(a) && typeof a != 'string') yield *a;
     else yield a;
   }
 };
 
 L.deepFlat = function *f(iter) {
   for (const a of iter) {
-    if (isIterable(a)) yield *f(a);
+    if (isIterable(a) && typeof a != 'string') yield *f(a);
     else yield a;
   }
 };
