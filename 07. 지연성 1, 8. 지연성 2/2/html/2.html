@@ -1,9 +1,9 @@
 <script src="../lib/fx.js"></script>
 
 # 이터러블 중심 프로그래밍에서의 지연 평가 (Lazy Evaluation)
- - 제때 계산법
- - 느긋한 계산법
- - 제너레이터/이터레이터 프로토콜을 기반으로 구현
+- 제때 계산법
+- 느긋한 계산법
+- 제너레이터/이터레이터 프로토콜을 기반으로 구현
 
 ### L.map
 
@@ -103,14 +103,14 @@
 ### L.range, L.map, L.filter, take, reduce 중첩 사용
 
 <script>
-  L.range = function *(l) {
+  L.range = function* (l) {
     let i = -1;
     while (++i < l) {
       yield i;
     }
   };
 
-  L.map = curry(function *(f, iter) {
+  L.map = curry(function* (f, iter) {
     iter = iter[Symbol.iterator]();
     let cur;
     while (!(cur = iter.next()).done) {
@@ -119,7 +119,7 @@
     }
   });
 
-  L.filter = curry(function *(f, iter) {
+  L.filter = curry(function* (f, iter) {
     iter = iter[Symbol.iterator]();
     let cur;
     while (!(cur = iter.next()).done) {
@@ -151,13 +151,13 @@
 
 ### map, filter 계열 함수들이 가지는 결합 법칙
 
- - 사용하는 데이터가 무엇이든지
- - 사용하는 보조 함수가 순수 함수라면 무엇이든지
- - 아래와 같이 결합한다면 둘 다 결과가 같다.
+- 사용하는 데이터가 무엇이든지
+- 사용하는 보조 함수가 순수 함수라면 무엇이든지
+- 아래와 같이 결합한다면 둘 다 결과가 같다.
 
- [[mapping, mapping], [filtering, filtering], [mapping, mapping]]
- =
- [[mapping, filtering, mapping], [mapping, filtering, mapping]]
+[[mapping, mapping], [filtering, filtering], [mapping, mapping]]
+=
+[[mapping, filtering, mapping], [mapping, filtering, mapping]]
 
 
 ## 결과를 만드는 함수 reduce, take
@@ -165,7 +165,7 @@
 ### reduce
 
 <script>
-  L.entries = function *(obj) {
+  L.entries = function* (obj) {
     for (const k in obj) yield [k, obj[k]];
   };
 
@@ -174,10 +174,10 @@
 
   const queryStr = pipe(
     L.entries,
-    L.map(([k, v])=> `${k}=${v}`),
+    L.map(([k, v]) => `${k}=${v}`),
     join('&'));
 
-  log(queryStr({ limit: 10, offset: 10, type: 'notice' }));
+  log(queryStr({limit: 10, offset: 10, type: 'notice'}));
 
   // function *a() {
   //   yield 10;
@@ -193,14 +193,14 @@
 
 <script>
   const users = [
-    { age: 32 },
-    { age: 31 },
-    { age: 37 },
-    { age: 28 },
-    { age: 25 },
-    { age: 32 },
-    { age: 31 },
-    { age: 37 }
+    {age: 32},
+    {age: 31},
+    {age: 37},
+    {age: 28},
+    {age: 25},
+    {age: 32},
+    {age: 31},
+    {age: 37}
   ];
 
   const find = curry((f, iter) => go(

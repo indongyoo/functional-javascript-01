@@ -5,7 +5,7 @@ const curry = f =>
 
 const isIterable = a => a && a[Symbol.iterator];
 
-const go1 = (a, f) => a instanceof Promise ? a.then(f): f(a);
+const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
 const reduce = curry((f, acc, iter) => {
   if (!iter) {
@@ -45,37 +45,37 @@ const takeAll = take(Infinity);
 
 const L = {};
 
-L.range = function *(l) {
+L.range = function* (l) {
   let i = -1;
   while (++i < l) yield i;
 };
 
-L.map = curry(function *(f, iter) {
+L.map = curry(function* (f, iter) {
   for (const a of iter) {
     yield f(a);
   }
 });
 
-L.filter = curry(function *(f, iter) {
+L.filter = curry(function* (f, iter) {
   for (const a of iter) {
     if (f(a)) yield a;
   }
 });
 
-L.entries = function *(obj) {
+L.entries = function* (obj) {
   for (const k in obj) yield [k, obj[k]];
 };
 
-L.flatten = function *(iter) {
+L.flatten = function* (iter) {
   for (const a of iter) {
-    if (isIterable(a)) yield *a;
+    if (isIterable(a)) yield* a;
     else yield a;
   }
 };
 
-L.deepFlat = function *f(iter) {
+L.deepFlat = function* f(iter) {
   for (const a of iter) {
-    if (isIterable(a)) yield *f(a);
+    if (isIterable(a)) yield* f(a);
     else yield a;
   }
 };

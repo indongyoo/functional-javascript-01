@@ -1,7 +1,7 @@
 const log = console.log;
 
 const curry = f =>
-    (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
+  (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
 
 // const map = curry((f, iter) => {
 //   let res = [];

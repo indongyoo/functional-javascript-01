@@ -5,14 +5,14 @@ const curry = f =>
 
 const L = {};
 
-L.range = function *(l) {
+L.range = function* (l) {
   let i = -1;
   while (++i < l) {
     yield i;
   }
 };
 
-L.entries = function *(obj) {
+L.entries = function* (obj) {
   for (const k in obj) yield [k, obj[k]];
 };
 

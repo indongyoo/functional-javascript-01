@@ -5,7 +5,7 @@ export const curry = f =>
 
 export const isIterable = a => a && a[Symbol.iterator];
 
-export const go1 = (a, f) => a instanceof Promise ? a.then(f): f(a);
+export const go1 = (a, f) => a instanceof Promise ? a.then(f) : f(a);
 
 const reduceF = (acc, a, f) =>
   a instanceof Promise ?
@@ -48,19 +48,19 @@ export const take = curry((l, iter) => {
       if (res.length == l) return res;
     }
     return res;
-  } ();
+  }();
 });
 
 export const takeAll = take(Infinity);
 
 export const L = {};
 
-L.range = function *(l) {
+L.range = function* (l) {
   let i = -1;
   while (++i < l) yield i;
 };
 
-L.map = curry(function *(f, iter) {
+L.map = curry(function* (f, iter) {
   for (const a of iter) {
     yield go1(a, f);
   }
@@ -68,7 +68,7 @@ L.map = curry(function *(f, iter) {
 
 export const nop = Symbol('nop');
 
-L.filter = curry(function *(f, iter) {
+L.filter = curry(function* (f, iter) {
   for (const a of iter) {
     const b = go1(a, f);
     if (b instanceof Promise) yield b.then(b => b ? a : Promise.reject(nop));
@@ -76,20 +76,20 @@ L.filter = curry(function *(f, iter) {
   }
 });
 
-L.entries = function *(obj) {
+L.entries = function* (obj) {
   for (const k in obj) yield [k, obj[k]];
 };
 
-L.flatten = function *(iter) {
+L.flatten = function* (iter) {
   for (const a of iter) {
-    if (isIterable(a) && typeof a != 'string') yield *a;
+    if (isIterable(a) && typeof a != 'string') yield* a;
     else yield a;
   }
 };
 
-L.deepFlat = function *f(iter) {
+L.deepFlat = function* f(iter) {
   for (const a of iter) {
-    if (isIterable(a) && typeof a != 'string') yield *f(a);
+    if (isIterable(a) && typeof a != 'string') yield* f(a);
     else yield a;
   }
 };
@@ -122,7 +122,10 @@ export const range = l => {
 };
 
 export const C = {};
-export function noop() {}
+
+export function noop() {
+}
+
 const catchNoop = ([...arr]) =>
   (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 

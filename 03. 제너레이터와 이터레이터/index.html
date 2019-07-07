@@ -4,11 +4,12 @@
 - 제너레이터: 이터레이터이자 이터러블을 생성하는 함수
 
 <script>
-  function *gen() {
+  function* gen() {
     yield 1;
     if (false) yield 2;
     yield 3;
   }
+
   let iter = gen();
   log(iter[Symbol.iterator]() == iter);
   log(iter.next());
@@ -23,20 +24,23 @@
 # odds
 
 <script>
-  function *infinity(i = 0) {
+  function* infinity(i = 0) {
     while (true) yield i++;
   }
-  function *limit(l, iter) {
+
+  function* limit(l, iter) {
     for (const a of iter) {
       yield a;
       if (a == l) return;
     }
   }
-  function *odds(l) {
+
+  function* odds(l) {
     for (const a of limit(l, infinity(1))) {
       if (a % 2) yield a;
     }
   }
+
   let iter2 = odds(10);
   log(iter2.next());
   log(iter2.next());

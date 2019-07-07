@@ -4,7 +4,10 @@
 
 <script>
   const C = {};
-  function noop() {}
+
+  function noop() {
+  }
+
   const catchNoop = ([...arr]) =>
     (arr.forEach(a => a instanceof Promise ? a.catch(noop) : a), arr);
 
@@ -24,15 +27,15 @@
     console.log('hi~');
     setTimeout(() => resolve(a), 1000);
   });
-/*  // console.time('');
-  go([1, 2, 3, 4, 5, 6, 7, 8, 9],
-    L.map(a => delay1000(a * a)),
-    L.filter(a => delay1000(a % 2)),
-    L.map(a => delay1000(a * a)),
-    // C.take(2),
-    C.reduce(add),
-    /!*log,
-    _ => console.timeEnd('')*!/);*/
+  /*  // console.time('');
+    go([1, 2, 3, 4, 5, 6, 7, 8, 9],
+      L.map(a => delay1000(a * a)),
+      L.filter(a => delay1000(a % 2)),
+      L.map(a => delay1000(a * a)),
+      // C.take(2),
+      C.reduce(add),
+      /!*log,
+      _ => console.timeEnd('')*!/);*/
 </script>
 
 ## 즉시 병렬적으로 평가하기 - C.map, C.filter
