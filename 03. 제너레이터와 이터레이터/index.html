@@ -2,71 +2,139 @@
 
 # 제너레이터/이터레이터
 - 제너레이터: 이터레이터이자 이터러블을 생성하는 함수
+- 제너레이터: 이터레이터를 리턴하는 함수
+- 제너레이터는 순회할값을 문장으로 표현하는것 
+  문장을 값으로 만들수있고 
+  문장을통해서 순회할수있는 값을 만들수있다.
+  제너레이터를 때문에 자바스크립트가 다형성이 높다.
 
 <script>
-  function* gen() {
+  function *gen() {
     yield 1;
-    if (false) yield 2;
+    if(false)yield 2;
     yield 3;
+    return 100;
   }
-
   let iter = gen();
-  log(iter[Symbol.iterator]() == iter);
-  log(iter.next());
-  log(iter.next());
-  log(iter.next());
-  log(iter.next());
 
-  for (const a of gen()) log(a);
-  console.clear();
+  // log(iter[Symbol.iterator]() == iter)
+  // log(iter.next())
+  log(iter.next())
+  log(iter.next())
+  log(iter.next())
+  log(iter.next())
+  log(iter.next())
+  
+  for(const a of gen()) log(a)
+
+  // function* gen() {
+  //   yield 1;
+  //   if (false) yield 2;
+  //   yield 3;
+  // }
+
+  // let iter = gen();
+  // log(iter[Symbol.iterator]() == iter);
+  // log(iter.next());
+  // log(iter.next());
+  // log(iter.next());
+  // log(iter.next());
+
+  // for (const a of gen()) log(a);
+  // console.clear();
 </script>
 
-# odds
+# odds 홀수먼 발생시켜서 순회하는 제너레이터
 
 <script>
-  function* infinity(i = 0) {
-    while (true) yield i++;
+console.clear()
+function *infinity(i = 0) {
+  while(true) yield i++;
+}
+function *limit(l,iter) {
+  for(const a of iter) {
+    yield a;
+    if(a == l) return;
+  }
+}
+
+function *odds(l) {
+  for(const a of limit(l, infinity(1))) {
+    if(a%2) yield a;
+    // if(a == l) return;
   }
 
-  function* limit(l, iter) {
-    for (const a of iter) {
-      yield a;
-      if (a == l) return;
-    }
-  }
+  // for(let i =0; i< l; i++){
+  //   if(i%2) yield i;
+  // }
+}
+let iter4 = odds(10)
+log(iter4.next())
+log(iter4.next())
+log(iter4.next())
+log(iter4.next())
+log(iter4.next())
+log(iter4.next())
+log(iter4.next())
 
-  function* odds(l) {
-    for (const a of limit(l, infinity(1))) {
-      if (a % 2) yield a;
-    }
-  }
+for(const a of odds(40)) log(a)
+  // function* infinity(i = 0) {
+  //   while (true) yield i++;
+  // }
 
-  let iter2 = odds(10);
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
-  log(iter2.next());
+  // function* limit(l, iter) {
+  //   for (const a of iter) {
+  //     yield a;
+  //     if (a == l) return;
+  //   }
+  // }
 
-  for (const a of odds(40)) log(a);
+  // function* odds(l) {
+  //   for (const a of limit(l, infinity(1))) {
+  //     if (a % 2) yield a;
+  //   }
+  // }
 
-  console.clear();
+  // let iter2 = odds(10);
+  // log(iter2.next());
+  // log(iter2.next());
+  // log(iter2.next());
+  // log(iter2.next());
+  // log(iter2.next());
+  // log(iter2.next());
+  // log(iter2.next());
+
+  // for (const a of odds(40)) log(a);
+
+  // console.clear();
 </script>
 
 # for of, 전개 연산자, 구조 분해, 나머지 연산자
 
 <script>
-  log(...odds(10));
-  log([...odds(10), ...odds(20)]);
+  console.clear()
 
-  const [head, ...tail] = odds(5);
-  log(head);
-  log(tail);
+  // log(...odds(10))
+  // log([...odds(10),...odds(20)])
 
-  const [a, b, ...rest] = odds(10);
-  log(a);
-  log(b);
-  log(rest);
+  const [head, ...tail] = odds(10);
+  log(head)
+  log(tail)
+
+  const [a,b, ...rest] = odds(10);
+  log(a)
+  log(b)
+  log(rest)
+
+  // log(...odds(10));
+  // log([...odds(10), ...odds(20)]);
+
+  // const [head, ...tail] = odds(5);
+  // log(head);
+  // log(tail);
+
+  // const [a, b, ...rest] = odds(10);
+  // log(a);
+  // log(b);
+  // log(rest);
 </script>
