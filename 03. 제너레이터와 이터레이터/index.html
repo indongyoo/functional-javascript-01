@@ -3,19 +3,27 @@
 # 제너레이터/이터레이터
 - 제너레이터: 이터레이터이자 이터러블을 생성하는 함수
 
+제너레이터를 통해 어떤 값도 순회하게 만들 수 있음
+
 <script>
-  function* gen() {
+  function *gen() {
+    /**
+     * yield
+     * - 값 반환: 제너레이터 함수의 실행을 일시 중지하고, 특정 값을 호출자에게 반환
+     * - 상태 저장: 제너레이트 함수는 yield를 만날 때 까지 실행되며, 그 지점에서 일시 중지되어 상태를 저장
+     *      그 이후 next() 메서드를 호출하면 저장된 상태부터 다시 실행
+     * */
     yield 1;
     if (false) yield 2;
     yield 3;
   }
 
+
   let iter = gen();
-  log(iter[Symbol.iterator]() == iter);
-  log(iter.next());
-  log(iter.next());
-  log(iter.next());
-  log(iter.next());
+  log(iter[Symbol.iterator]() == iter); // true
+  log(iter.next()); // {value: 1, done: false}
+  log(iter.next()); // {value: 3, done: false} => yield 2가 실행되지 않았기 때문에
+  log(iter.next()); // {value: undefined, done: true}
 
   for (const a of gen()) log(a);
   console.clear();
@@ -24,18 +32,38 @@
 # odds
 
 <script>
-  function* infinity(i = 0) {
+  function *infinity(i = 0) {
     while (true) yield i++;
   }
 
-  function* limit(l, iter) {
+  // 기본적인 odd 제너레이터
+  // function *odds(l) {
+  //     for (let i = 0; i < l; i++) {
+  //       if (i % 2) yield i;
+  //     }
+  // }
+
+
+  // limit을 이용한 odd 제너레이터
+  // function *odds(l) {
+  //     for (const a of infinity(1)) {
+  //         if (a % 2) yield a;
+  //         if (a === l) return;
+  //     }
+  // }
+
+  /**
+   * limit
+   * - 제너레이터를 받아서 l까지만 순회하도록 제한
+   * */
+  function *limit(l, iter) {
     for (const a of iter) {
       yield a;
-      if (a == l) return;
+      if (a === l) return;
     }
   }
 
-  function* odds(l) {
+  function *odds(l) {
     for (const a of limit(l, infinity(1))) {
       if (a % 2) yield a;
     }
@@ -50,7 +78,7 @@
   log(iter2.next());
   log(iter2.next());
 
-  for (const a of odds(40)) log(a);
+  for (const a of odds(40)) log(a); // 1~40까지의 홀수 출력
 
   console.clear();
 </script>
@@ -61,12 +89,14 @@
   log(...odds(10));
   log([...odds(10), ...odds(20)]);
 
+  log(...odds(5)) // 1 3 5
+
   const [head, ...tail] = odds(5);
-  log(head);
-  log(tail);
+  log(head); // 1
+  log(tail); // [3, 5]
 
   const [a, b, ...rest] = odds(10);
-  log(a);
-  log(b);
-  log(rest);
+  log(a); // 1
+  log(b); // 3
+  log(rest); // [5, 7, 9]
 </script>
