@@ -11,12 +11,14 @@
 
   const add = (a, b) => a + b;
 
+  // price가 20000 미만인 상품들의 가격 총합
   log(
     reduce(
       add,
       map(p => p.price,
         filter(p => p.price < 20000, products))));
 
+  // price가 20000 이상인 상품들의 가격 총합
   log(
     reduce(
       add,
