@@ -26,8 +26,18 @@
 <script>
   log('Arr -----------');
   const arr = [1, 2, 3];
+  console.log(arr[Symbol.iterator]) // f values() { [native code] }
+
+  /**
+   * iterator를 null로 바꿔버리면 for of문을 사용할 수 없다.
+   * TypeError: arr is not iterable
+   */
+  // arr[Symbol.iterator] = null;
+  for (const a of arr) log(a);
+
   let iter1 = arr[Symbol.iterator]();
-  for (const a of iter1) log(a);
+  console.log(iter1.next()); // {value: 1, done: false}
+  for (const a of iter1) log(a); // 2 3
 </script>
 
 ### Set을 통해 알아보기
@@ -35,7 +45,12 @@
 <script>
   log('Set -----------');
   const set = new Set([1, 2, 3]);
-  for (const a of set) log(a);
+  /**
+   * index로 접근은 불가는 하나 for문을 통해 순회는 가능
+   * for문을 통해 순회할 때는 Symbol.iterator를 통해 순회
+   */
+  console.log(set[0], set[1], set[2]); // undefined undefined undefined
+  for (const a of set) log(a); // 1 2 3
 </script>
 
 ### Map을 통해 알아보기
@@ -43,9 +58,9 @@
 <script>
   log('Map -----------');
   const map = new Map([['a', 1], ['b', 2], ['c', 3]]);
-  for (const a of map.keys()) log(a);
-  for (const a of map.values()) log(a);
-  for (const a of map.entries()) log(a);
+  for (const a of map.keys()) log(a); // a b c
+  for (const a of map.values()) log(a); // 1 2 3
+  for (const a of map.entries()) log(a); // ['a', 1] ['b', 2] ['c', 3]
   console.clear();
 </script>
 
@@ -64,6 +79,7 @@
         next() {
           return i == 0 ? {done: true} : {value: i--, done: false};
         },
+        // 자기 자신을 return 하도록
         [Symbol.iterator]() {
           return this;
         }
@@ -78,11 +94,11 @@
   // log(iterator.next());
   for (const a of iterator) log(a);
 
-  // const arr2 = [1, 2, 3];
-  // let iter2 = arr2[Symbol.iterator]();
-  // iter2.next();
-  // log(iter2[Symbol.iterator]() == iter2);
-  // for (const a of iter2) log(a);
+  const arr2 = [1, 2, 3];
+  let iter2 = arr2[Symbol.iterator]();
+  iter2.next();
+  log(iter2[Symbol.iterator]() == iter2); // true => Symbol.iterator는 자기 자신을 return하기 때문
+  for (const a of iter2) log(a);
 
   for (const a of document.querySelectorAll('*')) log(a);
   const all = document.querySelectorAll('*');

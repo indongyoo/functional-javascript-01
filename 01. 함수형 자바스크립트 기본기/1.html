@@ -13,7 +13,7 @@
   const a = 10;
   const add10 = a => a + 10;
   const r = add10(a);
-  // log(r);
+  log(r); // 20
 </script>
 
 # 일급 함수
@@ -22,13 +22,17 @@
 
 <script>
   const add5 = a => a + 5;
-  log(add5);
-  log(add5(5));
+  log(add5); // a => a + 5
+  log(add5(5)); // 10
 
+  // 함수 실행 시 함수를 리턴
   const f1 = () => () => 1;
-  log(f1());
+  log(f1()); // () => 1
 
   const f2 = f1();
-  log(f2);
-  log(f2());
+  log(f2); // () => 1
+  log(f2()); // 1
+
+  const f3 = () => 1
+  console.log(f3) // () => 1
 </script>
